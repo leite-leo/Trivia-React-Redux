@@ -1,7 +1,7 @@
-export const TOKEN_ID = 'TOKEN_ID';
-export const getTokenId = (token) => ({
-  type: TOKEN_ID,
-  payload: token,
+export const PLAYER_INFO = 'PLAYER_INFO';
+export const getPlayerInfo = (info) => ({
+  type: PLAYER_INFO,
+  payload: info,
 });
 
 export const requestTokenId = () => async (dispatch) => {
