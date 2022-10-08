@@ -1,12 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import { getPlayerInfo } from '../redux/action';
 
 class Login extends React.Component {
   state = {
     email: '',
     name: '',
+    isDisabled: false,
   };
 
   handleChange = ({ target }) => {
@@ -15,18 +17,23 @@ class Login extends React.Component {
   };
 
   handleClick = async () => {
+    // const { history } = this.props;
     const { history, dispatch } = this.props;
     const tokenEndpoint = 'https://opentdb.com/api_token.php?command=request';
     const response = await fetch(tokenEndpoint);
     const data = await response.json();
     localStorage.setItem('token', data.token);
+    // history.push('/game');
+    this.setState({
+      isDisabled: true,
+    });
 
     dispatch(getPlayerInfo(this.state));
     history.push('/game');
   };
 
   render() {
-    const { email, name } = this.state;
+    const { email, name, isDisabled } = this.state;
     const { history } = this.props;
     return (
       <div>
@@ -62,6 +69,7 @@ class Login extends React.Component {
             Configurações
           </button>
         </div>
+        { isDisabled && <Redirect to="/game" /> }
       </div>
     );
   }
