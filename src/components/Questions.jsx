@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchTrivia } from '../redux/action';
@@ -5,13 +6,12 @@ import { fetchTrivia } from '../redux/action';
 class Questions extends React.Component {
   state = {
     answers: [],
-  }
+  };
 
   async componentDidMount() {
     const { triviaAction } = this.props;
     await triviaAction();
     this.checkToken();
-    
   }
 
   checkToken = () => {
@@ -21,13 +21,13 @@ class Questions extends React.Component {
       localStorage.removeItem('token');
       history.push('/');
     }
-     this.allAnswers();
+    this.allAnswers();
   };
 
   allAnswers = () => {
     const { results } = this.props;
     let answers = [];
-    answers = [...results[0].incorrect_answers, results[0].correct_answer]
+    answers = [...results[0].incorrect_answers, results[0].correct_answer];
     console.log('respostas', answers);
     this.setState({ answers });
   };
@@ -35,7 +35,7 @@ class Questions extends React.Component {
   render() {
     const { results } = this.props;
     const { answers } = this.state;
-    console.log(answers, 'answers do render')
+    console.log(answers, 'answers do render');
     // console.log(results);
     return (
       <div>
@@ -55,21 +55,31 @@ class Questions extends React.Component {
               {' '}
               {results[0].question}
             </h4>
-            { answers.sort().map((options, i) => ( 
+            { answers.sort().map((options, i) => (
               <button
                 key={ i }
                 type="button"
-                data-testid={ options === results[0].correct_answer ? 'correct-answer' : `wrong-answer-${i}` }
+                data-testid={ options === results[0]
+                  .correct_answer ? 'correct-answer' : `wrong-answer-${i}` }
               >
                 {options}
               </button>
             ))}
           </div>
-       )}
+        )}
       </div>
     );
   }
 }
+
+Questions.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+  response_code: PropTypes.func.isRequired,
+  results: PropTypes.func.isRequired,
+  triviaAction: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = (state) => ({ ...state.questions });
 
