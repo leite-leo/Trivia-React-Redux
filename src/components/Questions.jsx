@@ -17,7 +17,7 @@ class Questions extends React.Component {
     const { results } = this.props;
     let answers = [];
     answers = [...results[0].incorrect_answers, results[0].correct_answer];
-    console.log('respostas', answers);
+    console.log('respostas');
     this.setState({ answers });
   };
 
