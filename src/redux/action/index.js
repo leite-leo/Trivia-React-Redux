@@ -1,12 +1,20 @@
 export const PLAYER_INFO = 'PLAYER_INFO';
+export const TRIVIA_REQUEST = 'TRIVIA_REQUEST';
+
 export const getPlayerInfo = (info) => ({
   type: PLAYER_INFO,
   payload: info,
 });
 
-export const requestTokenId = () => async (dispatch) => {
-  const tokenEndpoint = 'https://opentdb.com/api_token.php?command=request';
-  const response = await fetch(tokenEndpoint);
+export const getTriviaData = (info) => ({
+  type: TRIVIA_REQUEST,
+  payload: info,
+});
+
+export const fetchTrivia = () => async (dispatch) => {
+  const token = localStorage.getItem('token');
+  const ENDPOINT = `https://opentdb.com/api.php?amount=1&token=${token}`;
+  const response = await fetch(ENDPOINT);
   const data = await response.json();
-  dispatch(getTokenId(data.token));
+  dispatch(getTriviaData(data));
 };
