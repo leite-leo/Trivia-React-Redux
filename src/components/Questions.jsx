@@ -1,70 +1,62 @@
+import PropTypes from 'prop-types';
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchTrivia } from '../redux/action';
 
 class Questions extends React.Component {
   state = {
-    answers: [],
-  }
+    validToken: true,
+  };
 
-  async componentDidMount() {
-    const { triviaAction, history } = this.props;
-    await triviaAction(history);
-    // this.allAnswers(); 
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(fetchTrivia());
+    this.hasValidToken();
   }
+  // allAnswers = () => {
+  //   const { results } = this.props;
+  //   let answers = [];
+  //   if (results.lenght > 0) {
+  //     answers = [...results[0].incorrect_answers, results[0].correct_answer]
+  //     console.log('respostas', answers);
+  //     this.setState({ answers });
+  //   }
+  // };
 
-  allAnswers = () => {
-    const { results } = this.props;
-    let answers = [];
-    answers = [...results[0].incorrect_answers, results[0].correct_answer]
-    console.log('respostas', answers);
-    this.setState({ answers });
+  hasValidToken = () => {
+    const { response_code: ResponseCode } = this.props;
+    const invalid = 3;
+    if (ResponseCode === invalid) {
+      this.setState({ validToken: false });
+    }
   };
 
   render() {
-    const { results } = this.props;
-    const { answers } = this.state;
-    console.log(answers, 'answers do render')
-    // console.log(results);
+    const { validToken } = this.state;
     return (
       <div>
-          {results && (
-          <div>
-            <h4
-              data-testid="question-category"
-            >
-              Category:
-              {' '}
-              {results[0].category}
-            </h4>
-            <h4 
-              data-testid="question-text"
-            >
-              Question:
-              {' '}
-              {results[0].question}
-            </h4>
-            { answers.sort().map((options, i) => ( 
-              <button
-                key={ i }
-                type="button"
-                data-testid={ options === results[0].correct_answer ? 'correct-answer' : `wrong-answer-${i}` }
-              >
-                {options}
-              </button>
-            ))}
-          </div>
-       )}  
+        {
+          !validToken
+            ? <Redirect to="/" />
+            : (
+              <h2>Questions</h2>
+            )
+        }
       </div>
-    )
+    );
   }
 }
 
-const mapStateToProps = (state) => ({ ...state.questions });
+Questions.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  response_code: PropTypes.number.isRequired,
+};
 
-const mapDispatchToProps = (dispatch) => ({
-  triviaAction: (history) => dispatch(fetchTrivia(history)),
-
+const mapStateToProps = (state) => ({
+  ...state.questions,
+  // responseCode: state.questions.response_code,
+  // results: [...state.questions.results],
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Questions);
+export default connect(mapStateToProps)(Questions);
