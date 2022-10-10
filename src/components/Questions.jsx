@@ -9,20 +9,10 @@ class Questions extends React.Component {
   };
 
   async componentDidMount() {
-    const { triviaAction } = this.props;
-    await triviaAction();
-    this.checkToken();
+    const { triviaAction, history } = this.props;
+    await triviaAction(history);
+    // this.allAnswers();
   }
-
-  checkToken = () => {
-    const { history, response_code: responseCode } = this.props;
-    const invalidCode = 3;
-    if (responseCode === invalidCode) {
-      localStorage.removeItem('token');
-      history.push('/');
-    }
-    this.allAnswers();
-  };
 
   allAnswers = () => {
     const { results } = this.props;
@@ -84,7 +74,7 @@ Questions.propTypes = {
 const mapStateToProps = (state) => ({ ...state.questions });
 
 const mapDispatchToProps = (dispatch) => ({
-  triviaAction: () => dispatch(fetchTrivia()),
+  triviaAction: (history) => dispatch(fetchTrivia(history)),
 
 });
 
