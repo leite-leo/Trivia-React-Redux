@@ -10,7 +10,7 @@ class Questions extends React.Component {
   async componentDidMount() {
     const { triviaAction, history } = this.props;
     await triviaAction(history);
-    this.allAnswers(); 
+    // this.allAnswers(); 
   }
 
   allAnswers = () => {
