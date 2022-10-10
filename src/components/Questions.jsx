@@ -3,20 +3,25 @@ import { connect } from 'react-redux';
 import { fetchTrivia } from '../redux/action';
 
 class Questions extends React.Component {
-  componentDidMount() {
+  state = {
+    answers: [],
+  }
+
+  async componentDidMount() {
     const { triviaAction } = this.props;
+    await triviaAction();
     this.checkToken();
-    triviaAction();
+    
   }
 
   checkToken = () => {
-    const { history, response_code } = this.props;
+    const { history, response_code: responseCode } = this.props;
     const invalidCode = 3;
-    if (response_code === invalidCode) {
+    if (responseCode === invalidCode) {
       localStorage.removeItem('token');
       history.push('/');
     }
-    this.allAnswers();
+     this.allAnswers();
   };
 
   allAnswers = () => {
@@ -24,37 +29,43 @@ class Questions extends React.Component {
     let answers = [];
     answers = [...results[0].incorrect_answers, results[0].correct_answer]
     console.log('respostas', answers);
+    this.setState({ answers });
   };
 
   render() {
     const { results } = this.props;
+    const { answers } = this.state;
+    console.log(answers, 'answers do render')
     // console.log(results);
     return (
       <div>
-        {results?.map((element, index) => (<div key={ index }>
-          <h4
-            data-testid="question-category"
-          >
-            Category:
-            {' '}
-            {element.category}
-          </h4>
-          <h4
-            data-testid="question-text"
-          >
-            Question:
-            {' '}
-            {element.question}
-          </h4>
-          {element.incorrect_answers?.map((options, i) => (<div key={ i }>
-            <button
-              type="button"
+        {results && (
+          <div>
+            <h4
+              data-testid="question-category"
             >
-              {options}
-            </button>
+              Category:
+              {' '}
+              {results[0].category}
+            </h4>
+            <h4
+              data-testid="question-text"
+            >
+              Question:
+              {' '}
+              {results[0].question}
+            </h4>
+            { answers.sort().map((options, i) => ( 
+              <button
+                key={ i }
+                type="button"
+                data-testid={ options === results[0].correct_answer ? 'correct-answer' : `wrong-answer-${i}` }
+              >
+                {options}
+              </button>
+            ))}
           </div>
-          ))}
-       </div>))}
+       )}
       </div>
     );
   }

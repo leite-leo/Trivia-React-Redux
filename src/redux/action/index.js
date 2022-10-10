@@ -13,7 +13,7 @@ export const getTriviaData = (info) => ({
 
 export const fetchTrivia = () => async (dispatch) => {
   const token = localStorage.getItem('token');
-  const ENDPOINT = `https://opentdb.com/api.php?amount=5&token=${token}`;
+  const ENDPOINT = `https://opentdb.com/api.php?amount=1&token=${token}`;
   const response = await fetch(ENDPOINT);
   const data = await response.json();
   dispatch(getTriviaData(data));
