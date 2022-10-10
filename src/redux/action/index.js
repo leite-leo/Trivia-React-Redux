@@ -11,10 +11,17 @@ export const getTriviaData = (info) => ({
   payload: info,
 });
 
-export const fetchTrivia = () => async (dispatch) => {
+export const fetchTrivia = (history) => async (dispatch) => {
   const token = localStorage.getItem('token');
-  const ENDPOINT = `https://opentdb.com/api.php?amount=1&token=${token}`;
+  console.log(token, 'token')
+  const ENDPOINT = `https://opentdb.com/api.php?amount=5&token=${token}`;
   const response = await fetch(ENDPOINT);
   const data = await response.json();
+  console.log(history,'history')
+  if (data.response_code === 3) {
+    localStorage.removeItem('token');
+    history.push('/');
+    console.log('entrou no if')
+  }
   dispatch(getTriviaData(data));
 };
