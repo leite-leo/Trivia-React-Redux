@@ -1,14 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
 import { getPlayerInfo } from '../redux/action';
 
 class Login extends React.Component {
   state = {
     email: '',
     name: '',
-    isDisabled: false,
   };
 
   handleChange = ({ target }) => {
@@ -22,17 +20,13 @@ class Login extends React.Component {
     const response = await fetch(tokenEndpoint);
     const data = await response.json();
     localStorage.setItem('token', data.token);
-    this.setState({
-      isDisabled: true,
-    });
 
     dispatch(getPlayerInfo(this.state));
     history.push('/game');
-    // window.location = '/game';
   };
 
   render() {
-    const { email, name, isDisabled } = this.state;
+    const { email, name } = this.state;
     const { history } = this.props;
     return (
       <div>
@@ -68,7 +62,6 @@ class Login extends React.Component {
             Configurações
           </button>
         </div>
-        { isDisabled && <Redirect to="/game" /> }
       </div>
     );
   }
