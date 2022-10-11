@@ -1,100 +1,76 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchTrivia } from '../redux/action';
 
 class Questions extends React.Component {
   state = {
-    answers: [],
-    isLoading: true,
+    questions: [],
   };
 
   async componentDidMount() {
-    const { triviaAction, history } = this.props;
-    await triviaAction(history);
-    this.allAnswers();
+    this.fetchTrivia();
   }
 
-  allAnswers = () => {
-    const { results } = this.props;
-    let answers = [];
-    if (results.length > 0) {
-      answers = [...results[0].incorrect_answers, results[0].correct_answer];
-      console.log('respostas', answers);
-      const newAnswers = this.shuffleArray(answers);
-      this.setState({
-        answers: newAnswers,
-        isLoading: false,
-      });
+  fetchTrivia = async () => {
+    const token = localStorage.getItem('token');
+    const ENDPOINT = `https://opentdb.com/api.php?amount=5&token=${token}`;
+    const response = await fetch(ENDPOINT);
+    const data = await response.json();
+
+    if (data.results.length > 0) {
+      this.setState({ questions: data.results });
+    } else {
+      window.location = '/';
     }
   };
 
-  shuffleArray = (arr) => {
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
+  setAnswerOptions = () => {
+    const { questions } = this.state;
+    let allAnswers;
+    if (questions.length > 0) {
+      allAnswers = [questions[0].correct_answer, ...questions[0].incorrect_answers];
     }
-    return arr;
+    return allAnswers;
   };
 
   render() {
-    const { results } = this.props;
-    const { answers, isLoading } = this.state;
-    console.log(answers, 'answers do render');
-    console.log(results, 'results do render');
-    if (isLoading === false) {
-      return (
-        <div>
-          {results && (
-            <div>
-              <h4
-                data-testid="question-category"
-              >
-                Category:
-                {' '}
-                {results[0].category}
-              </h4>
-              <h4
-                data-testid="question-text"
-              >
-                Question:
-                {' '}
-                {results[0].question}
-              </h4>
-              <div data-testid="answer-options">
-                { answers.sort().map((options, i) => (
-                  <button
-                    key={ i }
-                    type="button"
-                    data-testid={ options === results[0]
-                      .correct_answer ? 'correct-answer' : `wrong-answer-${i}` }
-                  >
-                    {options}
-                  </button>
-                ))}
+    const { questions } = this.state;
+    const sortFactor = 0.5;
+    return (
+      <div>
+        <h2>Questions</h2>
+        {
+          questions.length > 0
+            && (
+              <div>
+                <h4 data-testid="question-category">{ questions[0].category }</h4>
+                <p data-testid="question-text">{ questions[0].question }</p>
+                <div data-testid="answer-options">
+                  {
+                    this.setAnswerOptions()
+                      .sort(() => Math.random() - sortFactor)
+                      .map((element, index) => (
+                        <button
+                          key={ element }
+                          type="button"
+                          data-testid={ element === questions[0]
+                            .correct_answer ? 'correct-answer' : `wrong-answer-${index}` }
+                        >
+                          {element}
+                        </button>
+                      ))
+                  }
+                </div>
               </div>
-            </div>
-          )}
-        </div>
-      );
-    }
+            )
+        }
+      </div>
+    );
   }
 }
 
-Questions.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func,
-  }).isRequired,
-  response_code: PropTypes.func.isRequired,
-  results: PropTypes.func.isRequired,
-  triviaAction: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({ ...state.questions });
-
-const mapDispatchToProps = (dispatch) => ({
-  triviaAction: (history) => dispatch(fetchTrivia(history)),
-
+const mapStateToProps = (state) => ({
+  ...state.questions,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Questions);
+export default connect(mapStateToProps)(Questions);
