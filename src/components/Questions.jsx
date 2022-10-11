@@ -8,6 +8,7 @@ class Questions extends React.Component {
     isDisabled: false,
     count: 30,
     allAnswers: [],
+    anwsered: false,
   };
 
   async componentDidMount() {
@@ -43,6 +44,11 @@ class Questions extends React.Component {
     this.setState({ allAnswers: sortedAnswers });
   };
 
+  chooseAnswer = () => {
+    this.setState({ anwsered: true });
+    clearInterval(this.timerId);
+  };
+
   handleNextQuestion = () => {
     const { qIndex, questions } = this.state;
 
@@ -50,6 +56,13 @@ class Questions extends React.Component {
       this.setState((prevstate) => (
         { qIndex: prevstate.qIndex + 1 }
       ), () => this.setAnswerOptions());
+
+      this.setState({
+        count: 30,
+        isDisabled: false,
+        anwsered: false,
+      }, this.countUpdate);
+      this.disableButtons();
     }
   };
 
@@ -77,7 +90,7 @@ class Questions extends React.Component {
   };
 
   render() {
-    const { questions, isDisabled, count, allAnswers, qIndex } = this.state;
+    const { questions, isDisabled, count, allAnswers, qIndex, anwsered } = this.state;
     return (
       <div>
         <h1>{count}</h1>
@@ -96,6 +109,7 @@ class Questions extends React.Component {
                           key={ element }
                           disabled={ isDisabled }
                           type="button"
+                          onClick={ this.chooseAnswer }
                           data-testid={ element === questions[qIndex]
                             .correct_answer ? 'correct-answer' : `wrong-answer-${index}` }
                         >
@@ -108,7 +122,7 @@ class Questions extends React.Component {
             )
         }
         {
-          count === 0
+          (count === 0 || anwsered)
           && (
             <button
               type="button"
