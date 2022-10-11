@@ -76,7 +76,6 @@ class Questions extends React.Component {
 
   render() {
     const { questions, isDisabled, count, allAnswers } = this.state;
-    // const sortFactor = 0.5;
     return (
       <div>
         <h1>{count}</h1>
