@@ -6,23 +6,18 @@ import { fetchTrivia } from '../redux/action';
 
 class Questions extends React.Component {
   state = {
+    getAnswers: false,
     validToken: true,
+    answerOptions: [],
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(fetchTrivia());
+    await dispatch(fetchTrivia());
     this.hasValidToken();
+    this.setState({ getAnswers: true });
+    this.setAnswerOptions();
   }
-  // allAnswers = () => {
-  //   const { results } = this.props;
-  //   let answers = [];
-  //   if (results.lenght > 0) {
-  //     answers = [...results[0].incorrect_answers, results[0].correct_answer]
-  //     console.log('respostas', answers);
-  //     this.setState({ answers });
-  //   }
-  // };
 
   hasValidToken = () => {
     const { response_code: ResponseCode } = this.props;
@@ -32,15 +27,41 @@ class Questions extends React.Component {
     }
   };
 
+  setAnswerOptions = () => {
+    const { results } = this.props;
+    if (results.length > 0) {
+      const answerArray = [results[0].correct_answer, ...results[0].incorrect_answers];
+      this.setState({ answerOptions: answerArray });
+    }
+  };
+
   render() {
-    const { validToken } = this.state;
+    const { validToken, getAnswers, answerOptions } = this.state;
+    const { results } = this.props;
     return (
       <div>
+        <h2>Questions</h2>
+        { getAnswers && !validToken && <Redirect to="/" /> }
         {
-          !validToken
-            ? <Redirect to="/" />
-            : (
-              <h2>Questions</h2>
+          results.length > 0
+            && (
+              <div>
+                <h4 data-testid="question-category">{ results[0].category }</h4>
+                <p data-testid="question-text">{ results[0].question }</p>
+                <div data-testid="answer-options">
+                  {
+                    answerOptions.sort().map((element, index) => (
+                      <button
+                        key={ element }
+                        type="button"
+                        data-testid={ element === results[0].correct_answer ? 'correct-answer' : `wrong-answer-${index}` }
+                      >
+                        {element}
+                      </button>
+                    ))
+                  }
+                </div>
+              </div>
             )
         }
       </div>
@@ -55,8 +76,6 @@ Questions.propTypes = {
 
 const mapStateToProps = (state) => ({
   ...state.questions,
-  // responseCode: state.questions.response_code,
-  // results: [...state.questions.results],
 });
 
 export default connect(mapStateToProps)(Questions);

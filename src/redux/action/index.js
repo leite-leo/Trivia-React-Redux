@@ -11,7 +11,8 @@ export const getTriviaData = (info) => ({
   payload: info,
 });
 
-export const fetchTrivia = (history) => async (dispatch) => {
+// export const fetchTrivia = (history) => async (dispatch) => {
+export const fetchTrivia = () => async (dispatch) => {
   const token = localStorage.getItem('token');
   // const token = 'teste';
   console.log(token, 'token');
