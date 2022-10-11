@@ -30,7 +30,7 @@ describe('Testa a página de Login', () => {
     expect(titleGame).toBeInTheDocument();
   });
 
-  it('testa link para pagina de configuracoes', () => {
+  it('testa link para pagina de configuraçoes', () => {
     const { history } = renderWithRouterAndRedux(<App />);
     const btnSettings = screen.getByRole('button', { name: /configurações/i });
     expect(btnSettings).toBeDefined();
