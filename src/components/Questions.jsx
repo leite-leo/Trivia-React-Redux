@@ -66,7 +66,8 @@ class Questions extends React.Component {
                   <button
                     key={ i }
                     type="button"
-                    data-testid={ options === results[0].correct_answer ? 'correct-answer' : `wrong-answer-${i}` }
+                    data-testid={ options === results[0]
+                      .correct_answer ? 'correct-answer' : `wrong-answer-${i}` }
                   >
                     {options}
                   </button>
