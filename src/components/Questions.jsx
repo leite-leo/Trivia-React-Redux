@@ -6,6 +6,7 @@ class Questions extends React.Component {
     questions: [],
     qIndex: 0,
     timeout: false,
+    allAnswers: [],
   };
 
   async componentDidMount() {
@@ -19,7 +20,7 @@ class Questions extends React.Component {
     const data = await response.json();
 
     if (data.results.length > 0) {
-      this.setState({ questions: data.results });
+      this.setState({ questions: data.results }, () => this.setAnswerOptions());
     } else {
       window.location = '/';
     }
@@ -27,6 +28,7 @@ class Questions extends React.Component {
 
   setAnswerOptions = () => {
     const { questions, qIndex } = this.state;
+    const sortFactor = 0.5;
     let allAnswers;
     if (questions.length > 0) {
       allAnswers = [
@@ -34,7 +36,8 @@ class Questions extends React.Component {
         ...questions[qIndex].incorrect_answers,
       ];
     }
-    return allAnswers;
+    const sortedAnswers = allAnswers.sort(() => Math.random() - sortFactor);
+    this.setState({ allAnswers: sortedAnswers });
   };
 
   handleNextQuestion = () => {
@@ -43,13 +46,12 @@ class Questions extends React.Component {
     if (qIndex < questions.length - 1) {
       this.setState((prevstate) => (
         { qIndex: prevstate.qIndex + 1 }
-      ));
+      ), () => this.setAnswerOptions());
     }
   };
 
   render() {
-    const { questions, qIndex, timeout } = this.state;
-    const sortFactor = 0.5;
+    const { questions, qIndex, timeout, allAnswers } = this.state;
     return (
       <div>
         <h2>Questions</h2>
@@ -61,8 +63,7 @@ class Questions extends React.Component {
                 <p data-testid="question-text">{ questions[qIndex].question }</p>
                 <div data-testid="answer-options">
                   {
-                    this.setAnswerOptions()
-                      .sort(() => Math.random() - sortFactor)
+                    allAnswers
                       .map((element, index) => (
                         <button
                           key={ element }
