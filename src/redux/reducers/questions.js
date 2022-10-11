@@ -1,6 +1,6 @@
 import { TRIVIA_REQUEST } from '../action';
 
-const initialState = { };
+const initialState = {  results: [] };
 
 const questions = (state = initialState, action) => {
   switch (action.type) {

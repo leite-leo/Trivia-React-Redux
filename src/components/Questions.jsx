@@ -6,59 +6,77 @@ import { fetchTrivia } from '../redux/action';
 class Questions extends React.Component {
   state = {
     answers: [],
+    isLoading: true,
   };
 
   async componentDidMount() {
     const { triviaAction, history } = this.props;
     await triviaAction(history);
-    // this.allAnswers();
+    this.allAnswers();
   }
 
   allAnswers = () => {
     const { results } = this.props;
     let answers = [];
-    answers = [...results[0].incorrect_answers, results[0].correct_answer];
-    console.log('respostas', answers);
-    this.setState({ answers });
+    if (results.length > 0) {
+      answers = [...results[0].incorrect_answers, results[0].correct_answer];
+      console.log('respostas', answers);
+      const newAnswers = this.shuffleArray(answers);
+      this.setState({
+        answers: newAnswers,
+        isLoading: false,
+      });
+    }
+  };
+
+  shuffleArray = (arr) => {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
   };
 
   render() {
     const { results } = this.props;
-    const { answers } = this.state;
+    const { answers, isLoading } = this.state;
     console.log(answers, 'answers do render');
-    // console.log(results);
-    return (
-      <div>
-        {results && (
-          <div>
-            <h4
-              data-testid="question-category"
-            >
-              Category:
-              {' '}
-              {results[0].category}
-            </h4>
-            <h4
-              data-testid="question-text"
-            >
-              Question:
-              {' '}
-              {results[0].question}
-            </h4>
-            { answers.sort().map((options, i) => (
-              <button
-                key={ i }
-                type="button"
-                data-testid={ options === results[0]
-                  .correct_answer ? 'correct-answer' : `wrong-answer-${i}` }
+    console.log(results, 'results do render');
+    if (isLoading === false) {
+      return (
+        <div>
+          {results && (
+            <div>
+              <h4
+                data-testid="question-category"
               >
-                {options}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-    );
+                Category:
+                {' '}
+                {results[0].category}
+              </h4>
+              <h4
+                data-testid="question-text"
+              >
+                Question:
+                {' '}
+                {results[0].question}
+              </h4>
+              <div data-testid="answer-options">
+                { answers.sort().map((options, i) => (
+                  <button
+                    key={ i }
+                    type="button"
+                    data-testid={ options === results[0].correct_answer ? 'correct-answer' : `wrong-answer-${i}` }
+                  >
+                    {options}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
   }
 }
 
