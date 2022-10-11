@@ -29,7 +29,7 @@ describe('Testa a página de Login', () => {
     // const { location: { pathname } } = history;
     // expect(pathname).toBe('/game');
 
-    const titleGame = await screen.findByText('Game');
+    const titleGame = await screen.findByTestId('header-score');
     expect(titleGame).toBeInTheDocument();
   });
   it('', () => {
