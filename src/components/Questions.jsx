@@ -5,12 +5,15 @@ class Questions extends React.Component {
   state = {
     questions: [],
     qIndex: 0,
-    timeout: false,
+    isDisabled: false,
+    count: 30,
     allAnswers: [],
   };
 
   async componentDidMount() {
-    this.fetchTrivia();
+    await this.fetchTrivia();
+    this.disableButtons();
+    this.countUpdate();
   }
 
   fetchTrivia = async () => {
@@ -20,7 +23,7 @@ class Questions extends React.Component {
     const data = await response.json();
 
     if (data.results.length > 0) {
-      this.setState({ questions: data.results }, () => this.setAnswerOptions());
+      this.setState({ questions: data.results }, this.setAnswerOptions);
     } else {
       window.location = '/';
     }
@@ -50,10 +53,34 @@ class Questions extends React.Component {
     }
   };
 
+  setIsDisable = () => {
+    this.setState({
+      isDisabled: true,
+    });
+  };
+
+  disableButtons = () => {
+    const timeOut = 30000;
+    setTimeout(this.setIsDisable, timeOut);
+  };
+
+  countUpdate = () => {
+    const oneSecond = 1000;
+    this.timerId = setInterval(() => this.setState((previousState) => ({
+      count: previousState.count - 1,
+    }), () => {
+      const { count } = this.state;
+      if (count === 0) {
+        clearInterval(this.timerId);
+      }
+    }), oneSecond);
+  };
+
   render() {
-    const { questions, qIndex, timeout, allAnswers } = this.state;
+    const { questions, isDisabled, count, allAnswers, qIndex } = this.state;
     return (
       <div>
+        <h1>{count}</h1>
         <h2>Questions</h2>
         {
           questions.length > 0
@@ -67,6 +94,7 @@ class Questions extends React.Component {
                       .map((element, index) => (
                         <button
                           key={ element }
+                          disabled={ isDisabled }
                           type="button"
                           data-testid={ element === questions[qIndex]
                             .correct_answer ? 'correct-answer' : `wrong-answer-${index}` }
@@ -80,7 +108,7 @@ class Questions extends React.Component {
             )
         }
         {
-          !timeout
+          count === 0
           && (
             <button
               type="button"
