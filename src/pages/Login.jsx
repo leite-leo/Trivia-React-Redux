@@ -29,7 +29,8 @@ class Login extends React.Component {
     });
 
     dispatch(getPlayerInfo(this.state));
-    history.push('/game');
+    // history.push('/game');
+    window.location = '/game';
   };
 
   render() {
