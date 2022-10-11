@@ -1,64 +1,63 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchTrivia } from '../redux/action';
 
 class Questions extends React.Component {
   state = {
-    getAnswers: false,
-    validToken: true,
-    answerOptions: [],
+    questions: [],
   };
 
   async componentDidMount() {
-    const { dispatch } = this.props;
-    await dispatch(fetchTrivia());
-    this.hasValidToken();
-    this.setState({ getAnswers: true });
-    this.setAnswerOptions();
+    this.fetchTrivia();
   }
 
-  hasValidToken = () => {
-    const { response_code: ResponseCode } = this.props;
-    const invalid = 3;
-    if (ResponseCode === invalid) {
-      this.setState({ validToken: false });
+  fetchTrivia = async () => {
+    const token = localStorage.getItem('token');
+    const ENDPOINT = `https://opentdb.com/api.php?amount=5&token=${token}`;
+    const response = await fetch(ENDPOINT);
+    const data = await response.json();
+
+    if (data.results.length > 0) {
+      this.setState({ questions: data.results });
+    } else {
+      window.location = '/';
     }
   };
 
   setAnswerOptions = () => {
-    const { results } = this.props;
-    if (results.length > 0) {
-      const answerArray = [results[0].correct_answer, ...results[0].incorrect_answers];
-      this.setState({ answerOptions: answerArray });
+    const { questions } = this.state;
+    let allAnswers;
+    if (questions.length > 0) {
+      allAnswers = [questions[0].correct_answer, ...questions[0].incorrect_answers];
     }
+    return allAnswers;
   };
 
   render() {
-    const { validToken, getAnswers, answerOptions } = this.state;
-    const { results } = this.props;
+    const { questions } = this.state;
+    const sortFactor = 0.5;
     return (
       <div>
         <h2>Questions</h2>
-        { getAnswers && !validToken && <Redirect to="/" /> }
         {
-          results.length > 0
+          questions.length > 0
             && (
               <div>
-                <h4 data-testid="question-category">{ results[0].category }</h4>
-                <p data-testid="question-text">{ results[0].question }</p>
+                <h4 data-testid="question-category">{ questions[0].category }</h4>
+                <p data-testid="question-text">{ questions[0].question }</p>
                 <div data-testid="answer-options">
                   {
-                    answerOptions.sort().map((element, index) => (
-                      <button
-                        key={ element }
-                        type="button"
-                        data-testid={ element === results[0].correct_answer ? 'correct-answer' : `wrong-answer-${index}` }
-                      >
-                        {element}
-                      </button>
-                    ))
+                    this.setAnswerOptions()
+                      .sort(() => Math.random() - sortFactor)
+                      .map((element, index) => (
+                        <button
+                          key={ element }
+                          type="button"
+                          data-testid={ element === questions[0]
+                            .correct_answer ? 'correct-answer' : `wrong-answer-${index}` }
+                        >
+                          {element}
+                        </button>
+                      ))
                   }
                 </div>
               </div>
@@ -68,11 +67,6 @@ class Questions extends React.Component {
     );
   }
 }
-
-Questions.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  response_code: PropTypes.number.isRequired,
-};
 
 const mapStateToProps = (state) => ({
   ...state.questions,
