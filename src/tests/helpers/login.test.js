@@ -26,11 +26,10 @@ describe('Testa a página de Login', () => {
     expect(btnPlay).not.toBeDisabled();
     userEvent.click(btnPlay);
 
-    
-    const titleGame = await screen.findByText('Questions');
+    const titleGame = await screen.findByTestId('header-score');
     expect(titleGame).toBeInTheDocument();
   });
-  
+
   it('testa link para pagina de configuracoes', () => {
     const { history } = renderWithRouterAndRedux(<App />);
     const btnSettings = screen.getByRole('button', { name: /configurações/i });
