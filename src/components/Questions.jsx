@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 class Questions extends React.Component {
   state = {
     questions: [],
+    qIndex: 0,
+    timeout: false,
   };
 
   async componentDidMount() {
@@ -24,16 +26,29 @@ class Questions extends React.Component {
   };
 
   setAnswerOptions = () => {
-    const { questions } = this.state;
+    const { questions, qIndex } = this.state;
     let allAnswers;
     if (questions.length > 0) {
-      allAnswers = [questions[0].correct_answer, ...questions[0].incorrect_answers];
+      allAnswers = [
+        questions[qIndex].correct_answer,
+        ...questions[qIndex].incorrect_answers,
+      ];
     }
     return allAnswers;
   };
 
+  handleNextQuestion = () => {
+    const { qIndex, questions } = this.state;
+
+    if (qIndex < questions.length - 1) {
+      this.setState((prevstate) => (
+        { qIndex: prevstate.qIndex + 1 }
+      ));
+    }
+  };
+
   render() {
-    const { questions } = this.state;
+    const { questions, qIndex, timeout } = this.state;
     const sortFactor = 0.5;
     return (
       <div>
@@ -42,8 +57,8 @@ class Questions extends React.Component {
           questions.length > 0
             && (
               <div>
-                <h4 data-testid="question-category">{ questions[0].category }</h4>
-                <p data-testid="question-text">{ questions[0].question }</p>
+                <h4 data-testid="question-category">{ questions[qIndex].category }</h4>
+                <p data-testid="question-text">{ questions[qIndex].question }</p>
                 <div data-testid="answer-options">
                   {
                     this.setAnswerOptions()
@@ -52,7 +67,7 @@ class Questions extends React.Component {
                         <button
                           key={ element }
                           type="button"
-                          data-testid={ element === questions[0]
+                          data-testid={ element === questions[qIndex]
                             .correct_answer ? 'correct-answer' : `wrong-answer-${index}` }
                         >
                           {element}
@@ -62,6 +77,18 @@ class Questions extends React.Component {
                 </div>
               </div>
             )
+        }
+        {
+          !timeout
+          && (
+            <button
+              type="button"
+              data-testid="btn-next"
+              onClick={ this.handleNextQuestion }
+            >
+              Próxima Pergunta
+            </button>
+          )
         }
       </div>
     );
