@@ -17,7 +17,7 @@ class Login extends React.Component {
   };
 
   handleClick = async () => {
-    const { dispatch } = this.props;
+    const { history, dispatch } = this.props;
     const tokenEndpoint = 'https://opentdb.com/api_token.php?command=request';
     const response = await fetch(tokenEndpoint);
     const data = await response.json();
@@ -27,7 +27,8 @@ class Login extends React.Component {
     });
 
     dispatch(getPlayerInfo(this.state));
-    window.location = '/game';
+    history.push('/game');
+    // window.location = '/game';
   };
 
   render() {
