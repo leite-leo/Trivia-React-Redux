@@ -1,5 +1,7 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+import { getPlayerScore } from '../redux/action';
 
 class Questions extends React.Component {
   state = {
@@ -44,9 +46,39 @@ class Questions extends React.Component {
     this.setState({ allAnswers: sortedAnswers });
   };
 
-  chooseAnswer = () => {
+  chooseAnswer = ({ target }) => {
+    const { dispatch } = this.props;
     this.setState({ anwsered: true });
     clearInterval(this.timerId);
+    // const selectedAnswer = target.attributes['data-testid'].value;
+    const selectedAnswer = target.getAttribute('data-testid');
+    console.log(selectedAnswer);
+
+    if (selectedAnswer === 'correct-answer') {
+      const { count, questions, qIndex } = this.state;
+      const { difficulty } = questions[qIndex];
+      console.log(count, difficulty);
+      const hard = 3;
+      const medium = 2;
+      const easy = 1;
+      const standardPoints = 10;
+      let score;
+      switch (difficulty) {
+      case 'easy':
+        score = standardPoints + (count * easy);
+        break;
+      case 'medium':
+        score = standardPoints + (count * medium);
+        break;
+      case 'hard':
+        score = standardPoints + (count * hard);
+        break;
+      default:
+        score = 0;
+      }
+      console.log(score);
+      dispatch(getPlayerScore(score));
+    }
   };
 
   handleNextQuestion = () => {
@@ -63,6 +95,11 @@ class Questions extends React.Component {
         anwsered: false,
       }, this.countUpdate);
       this.disableButtons();
+    }
+
+    if (qIndex === questions.length - 1) {
+      console.log('ultimo click');
+      window.location = '/feedback';
     }
   };
 
@@ -138,8 +175,12 @@ class Questions extends React.Component {
   }
 }
 
+Questions.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+};
+
 const mapStateToProps = (state) => ({
-  ...state.questions,
+  ...state.player,
 });
 
 export default connect(mapStateToProps)(Questions);
