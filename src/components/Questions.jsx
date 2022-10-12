@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { getPlayerScore, getAssertions } from '../redux/action';
+import '../styles/Questions.css';
 
 class Questions extends React.Component {
   state = {
@@ -117,6 +118,20 @@ class Questions extends React.Component {
     setTimeout(this.setIsDisable, timeOut);
   };
 
+  handleBorderColor = (element) => {
+    const { anwsered, questions, qIndex } = this.state;
+    let setClass;
+
+    if (anwsered) {
+      setClass = 'wrong';
+    }
+
+    if (anwsered && element === questions[qIndex].correct_answer) {
+      setClass = 'correct';
+    }
+    return setClass;
+  };
+
   countUpdate = () => {
     const oneSecond = 1000;
     this.timerId = setInterval(() => this.setState((previousState) => ({
@@ -125,6 +140,7 @@ class Questions extends React.Component {
       const { count } = this.state;
       if (count === 0) {
         clearInterval(this.timerId);
+        this.setState({ anwsered: true });
       }
     }), oneSecond);
   };
@@ -148,6 +164,11 @@ class Questions extends React.Component {
                         <button
                           key={ element }
                           disabled={ isDisabled }
+                          className={
+                            anwsered
+                              ? this.handleBorderColor(element)
+                              : 'unanwsered'
+                          }
                           type="button"
                           onClick={ this.chooseAnswer }
                           data-testid={ element === questions[qIndex]
