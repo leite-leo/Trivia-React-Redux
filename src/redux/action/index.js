@@ -1,6 +1,7 @@
 export const PLAYER_INFO = 'PLAYER_INFO';
 export const PLAYER_SCORE = 'PLAYER_SCORE';
 export const GET_ASSERTIONS = 'GET_ASSERTIONS';
+export const RESET_SCORE = 'RESET_SCORE';
 
 export const getPlayerInfo = (info) => ({
   type: PLAYER_INFO,
@@ -14,4 +15,8 @@ export const getPlayerScore = (score) => ({
 
 export const getAssertions = () => ({
   type: GET_ASSERTIONS,
+});
+
+export const setResetScore = () => ({
+  type: RESET_SCORE,
 });
