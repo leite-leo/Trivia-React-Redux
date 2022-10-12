@@ -49,7 +49,6 @@ class Questions extends React.Component {
 
   chooseAnswer = ({ target }) => {
     const { dispatch } = this.props;
-    console.log(assertions);
     this.setState({ anwsered: true });
     clearInterval(this.timerId);
     // const selectedAnswer = target.attributes['data-testid'].value;

@@ -12,7 +12,6 @@ export const getPlayerScore = (score) => ({
   payload: score,
 });
 
-export const getAssertions = (assertions) => ({
+export const getAssertions = () => ({
   type: GET_ASSERTIONS,
-  payload: assertions,
 });

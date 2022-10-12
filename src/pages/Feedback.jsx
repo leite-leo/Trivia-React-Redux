@@ -11,7 +11,7 @@ class Feedback extends React.Component {
       <div>
         <Header />
         {
-          assertions < tres ? (
+          (assertions < tres && assertions) ? (
             <h1 data-testid="feedback-text">Could be better...</h1>
           ) : (
             <h1 data-testid="feedback-text">Well Done!</h1>
