@@ -9,6 +9,7 @@ class Feedback extends React.Component {
     const tres = 3;
     return (
       <div>
+        <h1>E ai firma</h1>
         <Header />
         {
           (assertions < tres && assertions) ? (
