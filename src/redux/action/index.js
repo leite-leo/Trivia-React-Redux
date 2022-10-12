@@ -10,3 +10,7 @@ export const getPlayerScore = (score) => ({
   type: PLAYER_SCORE,
   payload: score,
 });
+
+export const playerName = () => ({
+
+});
