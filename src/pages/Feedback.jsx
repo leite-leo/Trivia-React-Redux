@@ -2,20 +2,32 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
+import '../styles/Feedback.css';
 
 class Feedback extends React.Component {
   render() {
-    const { assertions } = this.props;
+    const { assertions, score } = this.props;
     const tres = 3;
     return (
       <div>
-        <h1>E ai firma</h1>
         <Header />
         {
           (assertions < tres && assertions) ? (
-            <h1 data-testid="feedback-text">Could be better...</h1>
+            <div className="feedbackReport">
+              <h1>Correct answers:</h1>
+              <h1 data-testid="feedback-total-question">{assertions}</h1>
+              <h1>Your score:</h1>
+              <h1 data-testid="feedback-total-score">{score}</h1>
+              <h1 data-testid="feedback-text">Could be better...</h1>
+            </div>
           ) : (
-            <h1 data-testid="feedback-text">Well Done!</h1>
+            <div className="feedbackReport">
+              <h1>Correct answers:</h1>
+              <h1 data-testid="feedback-total-question">{assertions}</h1>
+              <h1>Your score:</h1>
+              <h1 data-testid="feedback-total-score">{score}</h1>
+              <h1 data-testid="feedback-text">Well Done!</h1>
+            </div>
           )
         }
 
@@ -26,6 +38,7 @@ class Feedback extends React.Component {
 
 Feedback.propTypes = {
   assertions: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
