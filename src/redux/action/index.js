@@ -1,5 +1,6 @@
 export const PLAYER_INFO = 'PLAYER_INFO';
 export const PLAYER_SCORE = 'PLAYER_SCORE';
+export const GET_ASSERTIONS = 'GET_ASSERTIONS';
 
 export const getPlayerInfo = (info) => ({
   type: PLAYER_INFO,
@@ -11,6 +12,7 @@ export const getPlayerScore = (score) => ({
   payload: score,
 });
 
-export const playerName = () => ({
-
+export const getAssertions = (assertions) => ({
+  type: GET_ASSERTIONS,
+  payload: assertions,
 });

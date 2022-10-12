@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { getPlayerScore } from '../redux/action';
+import { getPlayerScore, getAssertions } from '../redux/action';
 
 class Questions extends React.Component {
   state = {
@@ -49,6 +49,7 @@ class Questions extends React.Component {
 
   chooseAnswer = ({ target }) => {
     const { dispatch } = this.props;
+    console.log(assertions);
     this.setState({ anwsered: true });
     clearInterval(this.timerId);
     // const selectedAnswer = target.attributes['data-testid'].value;
@@ -79,6 +80,7 @@ class Questions extends React.Component {
       }
       console.log(score);
       dispatch(getPlayerScore(score));
+      dispatch(getAssertions());
     }
   };
 
