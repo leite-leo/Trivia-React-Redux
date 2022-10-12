@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { getPlayerScore } from '../redux/action';
+import { getPlayerScore, getAssertions } from '../redux/action';
 import '../styles/Questions.css';
 
 class Questions extends React.Component {
@@ -21,6 +21,7 @@ class Questions extends React.Component {
   }
 
   fetchTrivia = async () => {
+    const { history } = this.props;
     const token = localStorage.getItem('token');
     const ENDPOINT = `https://opentdb.com/api.php?amount=5&token=${token}`;
     const response = await fetch(ENDPOINT);
@@ -29,7 +30,7 @@ class Questions extends React.Component {
     if (data.results.length > 0) {
       this.setState({ questions: data.results }, this.setAnswerOptions);
     } else {
-      window.location = '/';
+      history.push('/');
     }
   };
 
@@ -79,11 +80,13 @@ class Questions extends React.Component {
       }
       console.log(score);
       dispatch(getPlayerScore(score));
+      dispatch(getAssertions());
     }
   };
 
   handleNextQuestion = () => {
     const { qIndex, questions } = this.state;
+    const { history } = this.props;
 
     if (qIndex < questions.length - 1) {
       this.setState((prevstate) => (
@@ -100,7 +103,7 @@ class Questions extends React.Component {
 
     if (qIndex === questions.length - 1) {
       console.log('ultimo click');
-      window.location = '/feedback';
+      history.push('/feedback');
     }
   };
 
@@ -198,6 +201,9 @@ class Questions extends React.Component {
 
 Questions.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
 };
 
 const mapStateToProps = (state) => ({
