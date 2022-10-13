@@ -1,0 +1,13 @@
+.flexConfig {
+  align-items: center;
+  background-color: white;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: row;
+  height: 50px;
+  justify-content: center;
+  margin: 30px auto 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  width: 180px;
+}

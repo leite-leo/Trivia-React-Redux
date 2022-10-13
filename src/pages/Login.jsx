@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getPlayerInfo } from '../redux/action';
-import './Login.css';
+import '../styles/Login.css';
 
 class Login extends React.Component {
   state = {

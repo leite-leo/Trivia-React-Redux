@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import { setResetScore } from '../redux/action';
-import './Ranking.css';
+import '../styles/Ranking.css';
 
 class Ranking extends React.Component {
   state = {
@@ -40,17 +40,18 @@ class Ranking extends React.Component {
     const { ranking } = this.state;
     return (
       <div className="flex">
-      <div>
-        <Link to="/">
-          <button
-            type="button"
-            data-testid="btn-go-home"
-            onClick={ this.resetScoreOnClick }
-            className="buttonRanking"
-          >
-            Jogar Novamente
-          </button>
-        </Link>
+        <div>
+          <Link to="/">
+            <button
+              type="button"
+              data-testid="btn-go-home"
+              onClick={ this.resetScoreOnClick }
+              className="buttonRanking"
+            >
+              Jogar Novamente
+            </button>
+          </Link>
+        </div>
         <h1 data-testid="ranking-title" className="ranking">Ranking</h1>
         {
           ranking
@@ -76,7 +77,6 @@ class Ranking extends React.Component {
                 >
                   { element.score }
                 </p>
-
               </div>
             ))
         }

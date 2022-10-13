@@ -1,5 +1,5 @@
 import React from 'react';
-import './Footer.css';
+import '../styles/Footer.css';
 // import Trybe from './trybe.png';
 
 class Footer extends React.Component {

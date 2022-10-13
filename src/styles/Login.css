@@ -1,0 +1,28 @@
+.flex {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.caixa {
+  background-color: white;
+  border-radius: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  padding-bottom: 20px;
+  width: 310px;
+}
+
+.flexInput {
+  height: 30px;
+  margin-bottom: 5px;
+  width: 220px;
+}
+
+.button {
+  height: 30px;
+  margin-bottom: 25px;
+  width: 220px;
+}

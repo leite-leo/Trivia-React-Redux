@@ -1,3 +1,21 @@
+.flexFeedback {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .feedbackReport {
+  background-color: white;
+  border-radius: 30px;
+  margin: 10px auto;
+  padding-left: 140px;
+  padding-right: 140px;
   text-align: center;
+}
+
+.buttonFeedback {
+  height: 30px;
+  margin-bottom: 10px;
+  width: 420px;
 }

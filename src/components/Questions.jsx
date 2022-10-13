@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { getPlayerScore, getAssertions } from '../redux/action';
-import './Questions.css';
+import '../styles/Questions.css';
 
 class Questions extends React.Component {
   state = {
@@ -82,6 +82,7 @@ class Questions extends React.Component {
       dispatch(getPlayerScore(score));
       dispatch(getAssertions());
     }
+    this.setIsDisable();
   };
 
   handleNextQuestion = () => {
@@ -110,12 +111,12 @@ class Questions extends React.Component {
   setIsDisable = () => {
     this.setState({
       isDisabled: true,
-    });
+    }, () => clearInterval(this.timeOutId));
   };
 
   disableButtons = () => {
     const timeOut = 30000;
-    setTimeout(this.setIsDisable, timeOut);
+    this.timeOutId = setInterval(this.setIsDisable, timeOut);
   };
 
   handleBorderColor = (element) => {

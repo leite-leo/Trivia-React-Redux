@@ -1,19 +1,23 @@
 body {
-	background: linear-gradient(-45deg, #55b342, #8ce36f, #365424, #aedd5c);
-	background-size: 400% 400%;
-	animation: gradient 15s ease infinite;
-	height: 100vh;
-	font-family: Arial, Helvetica, sans-serif;
+  animation: gradient 15s ease infinite;
+  background: linear-gradient(-45deg, #55b342, #8ce36f, #365424, #aedd5c);
+  background-size: 400% 400%;
+  font-family: Arial , Helvetica , sans-serif;
+  height: 100vh;
+
 }
 
 @keyframes gradient {
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
+
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
