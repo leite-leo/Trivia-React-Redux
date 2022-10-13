@@ -2,10 +2,16 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { setResetScore } from '../redux/action';
 import Header from '../components/Header';
 import '../styles/Feedback.css';
 
 class Feedback extends React.Component {
+  resetScoreOnClick = () => {
+    const { dispatch } = this.props;
+    dispatch(setResetScore());
+  };
+
   render() {
     const { assertions, score } = this.props;
     const tres = 3;
@@ -14,7 +20,7 @@ class Feedback extends React.Component {
         <Header />
         <div className="feedbackReport">
           {
-            (assertions < tres && assertions) ? (
+            (assertions < tres) ? (
               <div>
                 <h1>Correct answers:</h1>
                 <h1 data-testid="feedback-total-question">{assertions}</h1>
@@ -38,6 +44,7 @@ class Feedback extends React.Component {
             type="button"
             data-testid="btn-play-again"
             className="buttonFeedback"
+            onClick={ this.resetScoreOnClick }
           >
             Play Again
           </button>
@@ -60,6 +67,7 @@ class Feedback extends React.Component {
 Feedback.propTypes = {
   assertions: PropTypes.number.isRequired,
   score: PropTypes.number.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
