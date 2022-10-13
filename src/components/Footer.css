@@ -1,0 +1,29 @@
+.flexFooter {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    background-color: rgb(16, 81, 23);
+    color: white;
+    font-size: 10px;
+    padding-right: 30px;
+    padding-left: 30px;
+    padding-bottom: 20px;
+    /* border-radius: 30px; */
+    /* margin-bottom: 0px; */
+    /* height: 50px; */
+    /* margin-top: auto; 
+    bottom: 0; */
+    /* flex-shrink: 0; */
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+
+  /* .trybe {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+  } */
