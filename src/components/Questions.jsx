@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { getPlayerScore, getAssertions } from '../redux/action';
-import '../styles/Questions.css';
+import './Questions.css';
 
 class Questions extends React.Component {
   state = {
@@ -148,13 +148,13 @@ class Questions extends React.Component {
   render() {
     const { questions, isDisabled, count, allAnswers, qIndex, anwsered } = this.state;
     return (
-      <div>
-        <h1>{count}</h1>
-        <h2>Questions</h2>
+      <div className="flexQuestions">
+        <h1 className="count">{count}</h1>
+        <h2 className="question">Questions</h2>
         {
           questions.length > 0
             && (
-              <div>
+              <div className="questionFundo">
                 <h4 data-testid="question-category">{ questions[qIndex].category }</h4>
                 <p data-testid="question-text">{ questions[qIndex].question }</p>
                 <div data-testid="answer-options">
@@ -189,6 +189,8 @@ class Questions extends React.Component {
               type="button"
               data-testid="btn-next"
               onClick={ this.handleNextQuestion }
+              className="button"
+
             >
               Próxima Pergunta
             </button>

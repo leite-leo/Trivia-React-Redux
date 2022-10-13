@@ -3,39 +3,54 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
-import '../styles/Feedback.css';
+import './Feedback.css';
 
 class Feedback extends React.Component {
   render() {
     const { assertions, score } = this.props;
     const tres = 3;
     return (
-      <div>
+      <div className="flexFeedback">
         <Header />
-        {
-          (assertions < tres && assertions) ? (
-            <div className="feedbackReport">
-              <h1>Correct answers:</h1>
-              <h1 data-testid="feedback-total-question">{assertions}</h1>
-              <h1>Your score:</h1>
-              <h1 data-testid="feedback-total-score">{score}</h1>
-              <h1 data-testid="feedback-text">Could be better...</h1>
-            </div>
-          ) : (
-            <div className="feedbackReport">
-              <h1>Correct answers:</h1>
-              <h1 data-testid="feedback-total-question">{assertions}</h1>
-              <h1>Your score:</h1>
-              <h1 data-testid="feedback-total-score">{score}</h1>
-              <h1 data-testid="feedback-text">Well Done!</h1>
-            </div>
-          )
-        }
+        <div className="feedbackReport">
+          {
+            (assertions < tres && assertions) ? (
+              <div>
+                <h1>Correct answers:</h1>
+                <h1 data-testid="feedback-total-question">{assertions}</h1>
+                <h1>Your score:</h1>
+                <h1 data-testid="feedback-total-score">{score}</h1>
+                <h1 data-testid="feedback-text">Could be better...</h1>
+              </div>
+            ) : (
+              <div>
+                <h1>Correct answers:</h1>
+                <h1 data-testid="feedback-total-question">{assertions}</h1>
+                <h1>Your score:</h1>
+                <h1 data-testid="feedback-total-score">{score}</h1>
+                <h1 data-testid="feedback-text">Well Done!</h1>
+              </div>
+            )
+          }
+        </div>
         <Link to="/">
-          <button type="button" data-testid="btn-play-again">Play Again</button>
+          <button
+            type="button"
+            data-testid="btn-play-again"
+            className="buttonFeedback"
+          >
+            Play Again
+          </button>
         </Link>
         <Link to="/ranking">
-          <button type="button" data-testid="btn-ranking">Ranking</button>
+          <button
+            type="button"
+            data-testid="btn-ranking"
+            className="buttonFeedback"
+          >
+            Ranking
+          </button>
+
         </Link>
       </div>
     );

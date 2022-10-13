@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getPlayerInfo } from '../redux/action';
+import './Login.css';
 
 class Login extends React.Component {
   state = {
@@ -29,15 +30,16 @@ class Login extends React.Component {
     const { email, name } = this.state;
     const { history } = this.props;
     return (
-      <div>
+      <div className="flex caixa">
         <h1>Login</h1>
-        <div>
+        <div className="flex">
           <input
             type="email"
             placeholder="E-mail"
             data-testid="input-gravatar-email"
             name="email"
             onChange={ this.handleChange }
+            className="flexInput"
           />
           <input
             type="text"
@@ -45,12 +47,14 @@ class Login extends React.Component {
             data-testid="input-player-name"
             name="name"
             onChange={ this.handleChange }
+            className="flexInput"
           />
           <button
             type="button"
             data-testid="btn-play"
             disabled={ !email.length > 0 || !name.length > 0 }
             onClick={ this.handleClick }
+            className="button"
           >
             Play
           </button>

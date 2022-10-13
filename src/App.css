@@ -8,9 +8,16 @@ body {
   text-align: center;
 }
 
-.App-logo {
+.AppLogo {
   height: 15vmin;
   pointer-events: none;
+  margin-top: 20px;
+  margin-left:auto;
+  margin-right:auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .red-border {
