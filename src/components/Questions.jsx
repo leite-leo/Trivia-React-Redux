@@ -190,6 +190,7 @@ class Questions extends React.Component {
               data-testid="btn-next"
               onClick={ this.handleNextQuestion }
               className="button"
+
             >
               Próxima Pergunta
             </button>

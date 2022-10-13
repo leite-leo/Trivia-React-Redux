@@ -40,6 +40,7 @@ class Ranking extends React.Component {
     const { ranking } = this.state;
     return (
       <div className="flex">
+      <div>
         <Link to="/">
           <button
             type="button"
@@ -56,6 +57,7 @@ class Ranking extends React.Component {
             .sort((a, b) => b.score - a.score)
             .map((element, index) => (
               <div key={ element.token } className="flexRanking">
+
                 <img
                   data-testid="ranking-title"
                   src={ `https://www.gravatar.com/avatar/${md5(element.gravatarEmail).toString()}` }
@@ -74,6 +76,7 @@ class Ranking extends React.Component {
                 >
                   { element.score }
                 </p>
+
               </div>
             ))
         }

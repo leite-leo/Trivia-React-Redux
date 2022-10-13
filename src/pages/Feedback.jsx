@@ -50,6 +50,7 @@ class Feedback extends React.Component {
           >
             Ranking
           </button>
+
         </Link>
       </div>
     );
