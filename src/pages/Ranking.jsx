@@ -40,18 +40,6 @@ class Ranking extends React.Component {
     const { ranking } = this.state;
     return (
       <div className="flex">
-        <div>
-          <Link to="/">
-            <button
-              type="button"
-              data-testid="btn-go-home"
-              onClick={ this.resetScoreOnClick }
-              className="buttonRanking"
-            >
-              Jogar Novamente
-            </button>
-          </Link>
-        </div>
         <h1 data-testid="ranking-title" className="ranking">Ranking</h1>
         {
           ranking
@@ -80,6 +68,18 @@ class Ranking extends React.Component {
               </div>
             ))
         }
+        <div>
+          <Link to="/">
+            <button
+              type="button"
+              data-testid="btn-go-home"
+              onClick={ this.resetScoreOnClick }
+              className="buttonRanking"
+            >
+              Play Again
+            </button>
+          </Link>
+        </div>
       </div>
     );
   }
