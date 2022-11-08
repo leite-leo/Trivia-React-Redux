@@ -1,5 +1,6 @@
 .flex {
   align-items: center;
+  color: darkslategray;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -16,13 +17,19 @@
 }
 
 .flexInput {
+  border-radius: 15px;
   height: 30px;
   margin-bottom: 5px;
   width: 220px;
 }
 
 .button {
-  height: 30px;
-  margin-bottom: 25px;
+  background-color: darkslategray;
+  border-radius: 90px;
+  color: white;
+  font-size: 45;
+  font-weight: 800;
+  height: 45px;
+  margin-top: 15px;
   width: 220px;
 }

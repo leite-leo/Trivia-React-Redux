@@ -15,7 +15,10 @@
 }
 
 .buttonFeedback {
-  height: 30px;
-  margin-bottom: 10px;
+  background-color: darkslategray;
+  border-radius: 90px;
+  color: white;
+  height: 45px;
+  margin-top: 15px;
   width: 420px;
 }

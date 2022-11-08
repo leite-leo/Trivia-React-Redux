@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { getPlayerScore, getAssertions } from '../redux/action';
 import '../styles/Questions.css';
 
+const fix = require('he');
+
 class Questions extends React.Component {
   state = {
     questions: [],
@@ -150,15 +152,28 @@ class Questions extends React.Component {
     const { questions, isDisabled, count, allAnswers, qIndex, anwsered } = this.state;
     return (
       <div className="flexQuestions">
-        <h1 className="count">{count}</h1>
-        <h2 className="question">Questions</h2>
         {
           questions.length > 0
             && (
               <div className="questionFundo">
-                <h4 data-testid="question-category">{ questions[qIndex].category }</h4>
-                <p data-testid="question-text">{ questions[qIndex].question }</p>
-                <div data-testid="answer-options">
+                <h1 className="count">{count}</h1>
+                <h4 className="question-number">
+                  Question
+                  {` ${qIndex + 1}`}
+                </h4>
+                <h4
+                  data-testid="question-category"
+                  className="category"
+                >
+                  { questions[qIndex].category }
+                </h4>
+                <h3
+                  data-testid="question-text"
+                  className="question"
+                >
+                  { fix.decode(questions[qIndex].question) }
+                </h3>
+                <div data-testid="answer-options" className="answer-options">
                   {
                     allAnswers
                       .map((element, index) => (
@@ -193,7 +208,7 @@ class Questions extends React.Component {
               className="button"
 
             >
-              Próxima Pergunta
+              Next
             </button>
           )
         }

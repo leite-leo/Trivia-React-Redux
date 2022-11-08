@@ -34,18 +34,18 @@ class Login extends React.Component {
         <h1>Login</h1>
         <div className="flex">
           <input
-            type="email"
-            placeholder="E-mail"
-            data-testid="input-gravatar-email"
-            name="email"
-            onChange={ this.handleChange }
-            className="flexInput"
-          />
-          <input
             type="text"
             placeholder="Nome"
             data-testid="input-player-name"
             name="name"
+            onChange={ this.handleChange }
+            className="flexInput"
+          />
+          <input
+            type="email"
+            placeholder="E-mail"
+            data-testid="input-gravatar-email"
+            name="email"
             onChange={ this.handleChange }
             className="flexInput"
           />
@@ -62,8 +62,9 @@ class Login extends React.Component {
             type="button"
             data-testid="btn-settings"
             onClick={ () => history.push('/config') }
+            className="button"
           >
-            Configurações
+            Settings
           </button>
         </div>
       </div>

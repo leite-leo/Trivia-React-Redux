@@ -1,13 +1,13 @@
 .flexFooter {
   align-items: center;
-  background-color: rgb(16, 81, 23);
+  background-color: darkslategray;
   bottom: 0;
   color: white;
   display: flex;
   flex-direction: row;
   font-size: 10px;
+  height: 35px;
   justify-content: space-around;
-  padding-bottom: 20px;
   padding-left: 30px;
   padding-right: 30px;
   position: fixed;
